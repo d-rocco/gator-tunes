@@ -22,7 +22,7 @@ const GetProfileData = () => {
 
   //state variables for all of the data we get from firestore
   const [username, setUsername] = useState("");
-  const [userImage, setUserImage] = useState("hello");
+  const [userImage, setUserImage] = useState("");
   const [userTopTracks, setUserTopTracks] = useState([]);
   const [userTopArtists, setUserTopArtists] = useState([]);
   const [userSpotifyURL, setUserSpotifyURL] = useState("");

@@ -41,42 +41,6 @@ const Dashboard = ({ code }) => {
   const [userSpotifyURL, setUserSpotifyURL] = useState("");
   const [userArtistData, setUserArtistData] = useState([]);
 
-  const importSpotifyDataToFirestore = async () => {
-    //add all of the data to firestore
-    await setDoc(doc(db, "userinfo", `${currentUser.uid}`), {
-      name: username,
-      profilePicture: userImage,
-      profileUrl: userSpotifyURL,
-      userID: currentUser.uid,
-    });
-
-    userTopTracks.map(
-      async (track) =>
-        await setDoc(doc(db, "tracks", `${track.trackID}_${currentUser.uid}`), {
-          artist: track.artist,
-          title: track.title,
-          uri: track.uri,
-          albumCoverUrl: track.albumCoverUrl,
-          userID: currentUser.uid,
-        })
-    );
-
-    userTopArtists.map(
-      async (artist) =>
-        await setDoc(
-          doc(db, "artists", `${artist.artistID}_${currentUser.uid}`),
-          {
-            name: artist.name,
-            pictureUrl: artist.pictureUrl,
-            uri: artist.uri,
-            artistID: artist.artistID,
-            userID: currentUser.uid,
-            genre: artist.genre,
-          }
-        )
-    );
-  };
-
   // for whenever access token changes
   useEffect(() => {
     if (!accessToken) return;
@@ -150,14 +114,50 @@ const Dashboard = ({ code }) => {
     );
   }, [accessToken]);
 
+  const importSpotifyDataToFirestore = async () => {
+    //add all of the data to firestore
+    await setDoc(doc(db, "userinfo", `${currentUser.uid}`), {
+      name: username,
+      profilePicture: userImage,
+      profileUrl: userSpotifyURL,
+      userID: currentUser.uid,
+    });
+
+    userTopTracks.map(
+      async (track) =>
+        await setDoc(doc(db, "tracks", `${track.trackID}_${currentUser.uid}`), {
+          artist: track.artist,
+          title: track.title,
+          uri: track.uri,
+          albumCoverUrl: track.albumCoverUrl,
+          userID: currentUser.uid,
+        })
+    );
+
+    userTopArtists.map(
+      async (artist) =>
+        await setDoc(
+          doc(db, "artists", `${artist.artistID}_${currentUser.uid}`),
+          {
+            name: artist.name,
+            pictureUrl: artist.pictureUrl,
+            uri: artist.uri,
+            artistID: artist.artistID,
+            userID: currentUser.uid,
+            genre: artist.genre,
+          }
+        )
+    );
+  };
+
   //check if a document in userinfo with the currentuser.uid exists. if it
   //does, show profile. else show import data to firestore button
   return (
     <div>
       <button onClick={importSpotifyDataToFirestore}>
-        Import Spotify Data to Firestore
+        Import Data to Firestore
       </button>
-
+      <GetProfileData></GetProfileData>
       <Container className="profile-container">
         <div className="user-info-container">
           <UserInfo
@@ -166,11 +166,47 @@ const Dashboard = ({ code }) => {
             userImage={userImage}
           />
         </div>
+
+        <div className="favorites-container">
+          <div className="my-top-text">My top tracks:</div>
+          <div className="top-tracks-container">
+            {userTopTracks.map((track) => (
+              <TopTracks track={track} key={track.uri} />
+            ))}
+          </div>
+
+          <div className="my-top-text">My top artists:</div>
+          <div className="top-artists-container">
+            {userTopArtists.map((artist) => (
+              <TopArtists artist={artist} key={artist.uri} />
+            ))}
+          </div>
+          <div className="my-top-text">My top genres:</div>
+          <div className="top-genres-container">
+            {userArtistData.map((artist) => (
+              <div className="genre">{artist.genres[0]}</div>
+            ))}
+          </div>
+        </div>
       </Container>
-      <GetProfileData></GetProfileData>
     </div>
   );
 };
+
+{
+  /* <div>
+<Container className="profile-container">
+  <div className="user-info-container">
+    <UserInfo
+      userURL={userSpotifyURL}
+      username={username}
+      userImage={userImage}
+    />
+  </div>
+</Container>
+<GetProfileData></GetProfileData>
+</div> */
+}
 
 export default Dashboard;
 //  <div className="favorites-container">
@@ -289,37 +325,37 @@ export default Dashboard;
 //   }, [accessToken]);
 
 //   return (
-//     <Container className="profile-container">
-//       <div className="user-info-container">
-//         <UserInfo
-//           userURL={userSpotifyURL}
-//           username={username}
-//           userImage={userImage}
-//         />
-//       </div>
+// <Container className="profile-container">
+//   <div className="user-info-container">
+//     <UserInfo
+//       userURL={userSpotifyURL}
+//       username={username}
+//       userImage={userImage}
+//     />
+//   </div>
 
-//       <div className="favorites-container">
-//         <div className="my-top-text">My top tracks:</div>
-//         <div className="top-tracks-container">
-//           {userTopTracks.map((track) => (
-//             <TopTracks track={track} key={track.uri} />
-//           ))}
-//         </div>
+//   <div className="favorites-container">
+//     <div className="my-top-text">My top tracks:</div>
+//     <div className="top-tracks-container">
+//       {userTopTracks.map((track) => (
+//         <TopTracks track={track} key={track.uri} />
+//       ))}
+//     </div>
 
-//         <div className="my-top-text">My top artists:</div>
-//         <div className="top-artists-container">
-//           {userTopArtists.map((artist) => (
-//             <TopArtists artist={artist} key={artist.uri} />
-//           ))}
-//         </div>
-//         <div className="my-top-text">My top genres:</div>
-//         <div className="top-genres-container">
-//           {userArtistData.map((artist) => (
-//             <div className="genre">{artist.genres[0]}</div>
-//           ))}
-//         </div>
-//       </div>
-//     </Container>
+//     <div className="my-top-text">My top artists:</div>
+//     <div className="top-artists-container">
+//       {userTopArtists.map((artist) => (
+//         <TopArtists artist={artist} key={artist.uri} />
+//       ))}
+//     </div>
+//     <div className="my-top-text">My top genres:</div>
+//     <div className="top-genres-container">
+//       {userArtistData.map((artist) => (
+//         <div className="genre">{artist.genres[0]}</div>
+//       ))}
+//     </div>
+//   </div>
+// </Container>
 //   );
 // };
 
