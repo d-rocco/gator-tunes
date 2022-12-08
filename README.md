@@ -1,9 +1,15 @@
 # seniorproject-gatortunes
 
-- open up two terminals, one will be for client, other will be for server
+- Open up two terminals in your, one will be for client, other will be for server
 - cd into client folder in the first terminal
-- npm install
+- Run npm install in client terminal
 - cd into server folder in the second terminal
-- npm install
-- go to first terminal, 'npm start' to start client
-- go to second terminal, 'npm run devStart' to start server
+- Run npm install in server terminal
+- go to client terminal, 'npm start' to start client
+- go to server terminal, 'npm start' to start server
+- You should now see our home page, hit the log in button to start
+- Sign in with a Google account of your choice
+- Now sign in with spotify account, email: gatortunes2022@gmail.com password: seniorproject1!
+- Go to the Import data tab, click the import button, then go to Profile and all your information will be there!
+
+Thank you!
