@@ -1,7 +1,7 @@
 # seniorproject-gatortunes
 
 - Clone project to your computer, and open it in your IDE of choice
-- Open up two terminals in your, one will be for client, other will be for server
+- Open up two terminals in your IDE, one will be for client, other will be for server
 - cd into client folder in the first terminal using 'cd client'
 - Run npm install in client terminal
 - cd into server folder in the second terminal using 'cd server'
